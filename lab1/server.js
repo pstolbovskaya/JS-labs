@@ -1,6 +1,18 @@
-var express = require('express');
-var bodyParser = require('body-parser');
- 
+const express = require('express');
+const bodyParser = require('body-parser');
+const dbController = require('./dbController');
+const multer = require('multer');
+
+let storage = multer.diskStorage({
+	destination: function(req, file, cb){
+		cb(null, __dirname+ '/uploads')
+	},
+	filename: function(req, file, cb) {
+		cb(null, file.fieldname + '-' + Date.now());
+	}
+});
+
+let upload = multer({storage: storage});
 var urlencodedParser =  bodyParser.urlencoded({extended : false});
 
 
@@ -15,34 +27,58 @@ app.use(express.static(__dirname + '/public'));
 //  return { filename: file.name, path: file.url };
 //});
 
-let mass = [{
-		id : 1,
-		title : "Title",
-		date : "today" },
-	{
-		id : 2,
-		title: "NoTitle",
-		date : "yesterday"},
-	{
-		id : 3,
-		title: "YesTitle",
-		date : "tomorrow"
-}]
+let tasks = dbController.getFromDB();
 //app.set('views','./views'); 
 app.set('view engine','ejs');
 
 
-app.post("/new", function(req, res){
-	mass.push(req.body);
-	console.log(req.body);
-} )
+app.post('/', upload.single('myFile'), function(req, res){
+	const task = {
+		id: Date.now(),
+		title: req.body.title,
+		date: req.body.date,
+		description: req.body.description,
+		filename: req.file.filename
+	}
+	tasks.push(task);
+	dbController.addTask(tasks);
+	res.redirect('/')
+} );
+
+
+function findTask(tasks, id){
+	const task = tasks.find(function(task){
+		return id == task.id;
+	})
+	return task;
+}
+
+function deleteTask(tasks, task){
+	const index = tasks.IndexOf(task);
+	tasks.splice(index, 1);
+	return index;
+}
+
+
 
 app.get('/', function (req, res) {
-	res.render('pages/alltasks', {data : mass});
+	res.render('pages/alltasks', {filedata : tasks});
 });
 
 app.get('/newtask',  function(req, res) {
 	res.render('pages/newtask')
 });
 
-app.listen(3000);
+app.get('/download/:id', function(req, res){
+	const task = findTask(tasks, req.params.id);
+	res.download(__dirname + '/uploads/' + task.filename);
+})
+
+app.get('/task/:id', function(req, res){
+	const task = findTask(tasks, req.params.id);
+	res.render('pages/task', filedata:task);
+});
+
+app.listen(3000, function(){
+	console.log("API started on localhost:3000");
+});

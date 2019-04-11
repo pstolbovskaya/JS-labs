@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
- <link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<br>
-<div align="center" class="text">
+<body class="body">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Task Manager</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link active" href="./newtask">Add new task</a>
+    </div>
+  </div>
+</nav>
+  <div align="center" class="text">
   This is your personal last try to be something like human with brain. Sorry.
 </div>
-<br>
-<body class="body">
   <div align="center" class="container">
-    <form method="post" action="/new">
+    <form method="post" action="/" enctype="multipart/form-data">
     <div class="taskinput" >
-      <input type="" id="title" name="" placeholder="Title of yoour task">  
+      <input type="" id="title" name="title" placeholder="Title of yoour task">  
       <br>
       <br>
-      <textarea>         
+      <textarea id="description" name="description">         
       </textarea>
       <br>
+      <input type="file" name="myFile" />    
       <button id="chooseFile" class="btn">Choose file</button>
     </div>
     <div>
@@ -30,11 +42,12 @@
     <button class="btn" type="submit">
       Add task
     </button>
-    <button class="btn">
+    <button  class="btn">
       All tasks
     </button>
+    </form>
    
   </div>
- </form>
+
 </body>
 <html>
