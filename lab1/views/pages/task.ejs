@@ -19,7 +19,7 @@
           </div>
   </div>
 </nav>
-    <form method="POST" action="edit/<%= filedata.id %>" enctype="multipart/form-data">
+    <form method="POST" action="/edit/<%= filedata.id %>" enctype="multipart/form-data">
         <input type="hidden" id="id" name="id" value="<%= filedata.id %>">  
         <p> <input id="title" type="text" name="title" value="<%= filedata.title %>"> </p>
         <p> <input type="date" id="date" name="date" value="<%= filedata.date %>"> </p>

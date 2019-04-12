@@ -28,7 +28,7 @@
 		<p><%= task.description %></p>
     <p><%= task.date %></p>
     <% if (task.filename){ %>
-		  <p><a href="download/<%= task.id %>">Файл</a></p>
+		  <p><a href="download/<%= task.id %>"><%= task.userFilename %></a></p>
     <% } %>
     <hr>
   <% }) %>

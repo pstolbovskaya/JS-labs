@@ -34,15 +34,18 @@ app.set('view engine','ejs');
 
 
 app.post('/', upload.single('myFile'), function(req, res){
+	console.log(req.file);
 	const task = {
 		id: Date.now(),
 		title: req.body.title,
 		date: req.body.date,
 		description: req.body.description,
-		filename: req.file?req.file.filename:undefined
+		filename: req.file?req.file.filename:undefined,
+		userFilename: req.file.originalname
 	}
+	console.log(req.file.filename);
 	tasks.push(task);
-	dbController.addTask(tasks);
+	dbController.writeTasks(tasks);
 	res.redirect('/')
 } );
 
@@ -72,7 +75,7 @@ app.get('/newtask',  function(req, res) {
 
 app.get('/download/:id', function(req, res){
 	const task = findTask(tasks, req.params.id);
-	res.download(__dirname + '/uploads/' + task.filename);
+	res.download(__dirname + '/uploads/' + task.filename, task.userFilename);
 })
 
 app.get('/task/:id', function(req, res){
@@ -80,23 +83,21 @@ app.get('/task/:id', function(req, res){
 	res.render('pages/task', {filedata:task} );
 });
 
-app.post('/task/edit/:id', upload.single("myFile"), function(req,res){
-    
-    const task = findTask(tasks, req.body.id);
-  
-    const newTask = {
-        id: Number(req.body.id),
-        title: req.body.title,
-        date: req.body.date,
-        description: req.body.description,
-        filename: req.file?req.file.filename:undefined
-    };
-	if(task.filename){
-    	filesController.deleteFile(__dirname, task.filename);
+app.post('/edit/:id', upload.single("myFile"), function(req,res){ 
+	const taskIndex = tasks.indexOf(findTask(tasks, req.body.id));
+	task = tasks[taskIndex];
+	task.id = Number(req.body.id);
+	task.title = req.body.title;
+	task.date = req.body.date;
+	task.description = req.body.description;
+	if(req.file){
+		if(task.filename){
+			filesController.deleteFile(__dirname, task.filename)
+		}
+		task.filename = req.file.filename; 
+		task.userFilename = req.file.originalname;
 	}
-	const index = deleteTask(tasks, task);
-    tasks.splice(index, 0, newTask);
-    dbController.addTask(tasks);
+	dbController.writeTasks(tasks);
     res.redirect('/');
 });
 
@@ -104,7 +105,7 @@ app.post('/task/delete/:id', function(req,res){
     const task = findTask(tasks, req.body.id);
     filesController.deleteFile(__dirname, task.filename);
     deleteTask(tasks, task);
-    dbController.addTask(tasks);
+    dbController.writeTasks(tasks);
     res.redirect('/');
 });
 

@@ -22,7 +22,7 @@ module.exports.getFromDB = function(){
 	}
 	return tasks;
 }
-module.exports.addTask = function(tasks){
+module.exports.writeTasks = function(tasks){
 	let datatofile = JSON.stringify(tasks);
 	fs.writeFileSync('database.json', datatofile);
 }
