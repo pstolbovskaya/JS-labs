@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Task Manager</a>
+  <a class="navbar-brand">Task Manager</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -23,11 +23,11 @@
 	
 	<% filedata.forEach((filedata) =>{ %>
 	
-		<p><a href=""></a></p>
-		<p><%= filedata.id %></p>
-		<p><%= filedata.title %></p>
+		<p></p>
+		<p><a href="/task/<%= filedata.id %>"><%= filedata.title %></a></p>
+		<p><%= filedata.description %></p>
 		<p><%= filedata.date %></p>
-		<p><a href="download/<%= filedata.id %>">Файл</a></p>
+		<p><a href="download/<%= filedata.id %>">Файл</a></p><hr>
 	<% }) %>
 
 </body>

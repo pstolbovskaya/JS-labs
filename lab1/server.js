@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dbController = require('./dbController');
 const multer = require('multer');
+const filesController = require('./filesController');
 
 let storage = multer.diskStorage({
 	destination: function(req, file, cb){
@@ -54,7 +55,7 @@ function findTask(tasks, id){
 }
 
 function deleteTask(tasks, task){
-	const index = tasks.IndexOf(task);
+	const index = tasks.indexOf(task);
 	tasks.splice(index, 1);
 	return index;
 }
@@ -76,7 +77,34 @@ app.get('/download/:id', function(req, res){
 
 app.get('/task/:id', function(req, res){
 	const task = findTask(tasks, req.params.id);
-	res.render('pages/task', filedata:task);
+	res.render('pages/task', {filedata:task} );
+});
+
+app.post('/task/edit/:id', upload.single("myFile"), function(req,res){
+    
+    const task = findTask(tasks, req.body.id);
+  
+    const newTask = {
+        id: Number(req.body.id),
+        title: req.body.title,
+        date: req.body.date,
+        description: req.body.description,
+        filename: req.file.filename
+    };
+
+    filesController.deleteFile(__dirname, task.filename);
+    const index = deleteTask(tasks, task);
+    tasks.splice(index, 0, newTask);
+    dbController.addTask(tasks);
+    res.redirect('/');
+});
+
+app.post('/task/delete/:id', function(req,res){
+    const task = findTask(tasks, req.body.id);
+    filesController.deleteFile(__dirname, task.filename);
+    deleteTask(tasks, task);
+    dbController.addTask(tasks);
+    res.redirect('/');
 });
 
 app.listen(3000, function(){
