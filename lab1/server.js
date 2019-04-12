@@ -39,7 +39,7 @@ app.post('/', upload.single('myFile'), function(req, res){
 		title: req.body.title,
 		date: req.body.date,
 		description: req.body.description,
-		filename: req.file.filename
+		filename: req.file?req.file.filename:undefined
 	}
 	tasks.push(task);
 	dbController.addTask(tasks);
@@ -89,11 +89,12 @@ app.post('/task/edit/:id', upload.single("myFile"), function(req,res){
         title: req.body.title,
         date: req.body.date,
         description: req.body.description,
-        filename: req.file.filename
+        filename: req.file?req.file.filename:undefined
     };
-
-    filesController.deleteFile(__dirname, task.filename);
-    const index = deleteTask(tasks, task);
+	if(task.filename){
+    	filesController.deleteFile(__dirname, task.filename);
+	}
+	const index = deleteTask(tasks, task);
     tasks.splice(index, 0, newTask);
     dbController.addTask(tasks);
     res.redirect('/');
