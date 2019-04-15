@@ -2,7 +2,10 @@
 <html>
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+  <link rel="stylesheet"  href="css/style.css">
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <script>  src = "server.js"  </script>
 	<title>
 		
 	</title>
@@ -20,18 +23,39 @@
     </div>
   </div>
 </nav>
-	
+
 	<% filedata.forEach((task) =>{ %>
-	
-		<p></p>
-		<p><a href="/task/<%= task.id %>"><%= task.title %></a></p>
-		<p><%= task.description %></p>
-    <p><%= task.date %></p>
-    <% if (task.filename){ %>
-		  <p><a href="download/<%= task.id %>"><%= task.userFilename %></a></p>
-    <% } %>
-    <hr>
+    <div class="mdc-card demo-card col-md-3">
+      <div tabindex="0">
+        <div class="demo-card__primary">
+          <h2 class="demo-card__title mdc-typography mdc-typography--headline6"><a href="/task/<%= task.id %>"><%= task.title %></a></h2>
+        </div>
+        <div class="demo-card__secondary mdc-typography mdc-typography--body2"><%= task.description %></div>
+      </div>
+        <p>Days before deadline: <%= task.deadline %> </p>
+        <p><a href="download/<%= task.id %>"><%= task.userFilename %></a></p>
+      <div class="mdc-card__actions">
+        <div class="mdc-card__action-buttons">
+          <a class="mdc-button mdc-card__action mdc-card__action--button" href="/task/<%= task.id %>">Edit</a>
+          <form method="POST" action="/task/delete/<%= task.id %>">
+            <input type="hidden" id="id" name="id" value="<%= task.id %>">
+            <button class="mdc-button mdc-card__action mdc-card__action--button" type="submit">Delete</button>
+            
+          </form>
+          </div>
+          <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" id="status" title="Status"><%= task.status %></button>
+        
+        </div>
+    
+      </div>
   <% }) %>
 
 </body>
+<script>
+  // let firstDate = new Date(Date.now),
+	// x = document.getelementbyid('date'),
+	// secondDate = x.value;
+  // timeDifference = Math.abs(secondDate.getTime() - firstDate.getTime());
+	// var differentDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
+</script>
 </html>

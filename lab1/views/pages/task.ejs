@@ -8,15 +8,15 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </header>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand">Task Manager</a>
+  <a class="navbar-brand">Task: <%= filedata.title %></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link " href="/">Home <span class="sr-only"></span></a>
       <a class="nav-item nav-link" href="./newtask">Add new task</a>
-          </div>
+    </div>
   </div>
 </nav>
     <form method="POST" action="/edit/<%= filedata.id %>" enctype="multipart/form-data">
@@ -28,8 +28,8 @@
         <p> <button type="submit">Submit</button> </p>
     </form>
     <form method="POST" action="delete/<%= filedata.id %>">
-    <input type="hidden" id="id" name="id" value="<%= filedata.id %>">
-    <button type="submit">Delete</button>
+      <input type="hidden" id="id" name="id" value="<%= filedata.id %>">
+      <button type="submit">Delete</button>
     </form>
 </body>
 </html>

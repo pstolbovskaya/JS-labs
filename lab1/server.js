@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const dbController = require('./dbController');
 const multer = require('multer');
 const filesController = require('./filesController');
-
+const filter = require('./filter')
 let storage = multer.diskStorage({
 	destination: function(req, file, cb){
 		cb(null, __dirname+ '/uploads')
@@ -38,24 +38,24 @@ app.post('/', upload.single('myFile'), function(req, res){
 	const task = {
 		id: Date.now(),
 		title: req.body.title,
-		date: req.body.date,
+		status: req.body.status,
+		date: req.body.firstDate,
 		description: req.body.description,
 		filename: req.file?req.file.filename:undefined,
-		userFilename: req.file.originalname
+		userFilename: req.file?req.file.originalname:undefined,
+		deadline: 0
 	}
-	console.log(req.file.filename);
 	tasks.push(task);
 	dbController.writeTasks(tasks);
 	res.redirect('/')
 } );
-
 
 function findTask(tasks, id){
 	const task = tasks.find(function(task){
 		return id == task.id;
 	})
 	return task;
-}
+} 
 
 function deleteTask(tasks, task){
 	const index = tasks.indexOf(task);
@@ -63,14 +63,21 @@ function deleteTask(tasks, task){
 	return index;
 }
 
-
-
 app.get('/', function (req, res) {
+	if (tasks.length != 0) {
+		for(let i = 0; i < tasks.length; i++){
+			let time = Math.ceil((Date.parse(tasks[i].date) - Date.now())/(1000*3600*24));
+			if (time < 0){
+				time = "Time is out";
+			}
+			tasks[i].deadline = time;
+		};	
+	};
 	res.render('pages/alltasks', {filedata : tasks});
 });
 
 app.get('/newtask',  function(req, res) {
-	res.render('pages/newtask')
+	res.render('pages/newtask');
 });
 
 app.get('/download/:id', function(req, res){
@@ -88,6 +95,7 @@ app.post('/edit/:id', upload.single("myFile"), function(req,res){
 	task = tasks[taskIndex];
 	task.id = Number(req.body.id);
 	task.title = req.body.title;
+	//task.date = differentDays;
 	task.date = req.body.date;
 	task.description = req.body.description;
 	if(req.file){
@@ -102,13 +110,22 @@ app.post('/edit/:id', upload.single("myFile"), function(req,res){
 });
 
 app.post('/task/delete/:id', function(req,res){
-    const task = findTask(tasks, req.body.id);
-    filesController.deleteFile(__dirname, task.filename);
+	const task = findTask(tasks, req.body.id);
+	if(task.filename){
+		filesController.deleteFile(__dirname, task.filename);
+	}
     deleteTask(tasks, task);
     dbController.writeTasks(tasks);
     res.redirect('/');
 });
-
+app.post('/task/deleteFile', function(req, res){
+	console.log("DELETING");
+	const task = findTask(tasks, req.params.id);
+	filesController.deleteFile(__dirname, task.filename);
+	res.redirect('/');
+});
 app.listen(3000, function(){
 	console.log("API started on localhost:3000");
 });
+
+app.post('/filter', filter.filterTasks);

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -23,23 +22,31 @@
 </div>
   <div align="center" class="container">
     <form method="post" action="/" enctype="multipart/form-data">
-    <div class="taskinput" >
+    <div class="taskinput">
       <input type="" id="title" name="title" placeholder="Title of yoour task">  
       <br>
       <br>
       <textarea id="description" name="description">         
       </textarea>
+      <form method="POST" action="/filter">
+      <select id="status" name="status">
+        <option>Начата</option>
+        <option>В процессе</option>
+        <option>Закончена</option>
+      </select>
+    </form>
       <br>
       <input type="file" name="myFile" />    
       
     </div>
     <div>
       <br>
-      <input type="date" name="date" id="date" class="dateinput"> 
+      <input  type="date" class="firstDate" name="firstDate" id="firstDate"> 
+
       <br>
      </div>
      <br>
-    <button class="btn" type="submit">
+    <button class="btn" type="submit" id="addtask">
       Add task
     </button>
     <button  class="btn">
@@ -50,4 +57,24 @@
   </div>
 
 </body>
+<script>
+  document.getElementById("addtask").onclick = function(event) {
+      title = document.getElementById("title").value;
+      console.log(title);
+      if(!title){
+        event.preventDefault();
+        alert("Введите имя задачи");
+      }  
+    };
+  document.getElementById("addtask").onclick = function(event) {
+    date = document.getElementById("firstDate").value;
+    console.log(date);
+    if (Math.ceil((Date.parse(date))/(1000*3600*24) - Date.now()) < 0){
+      console.log(Math.ceil(Date.now() - (Date.parse(date))/(1000*3600*24)));
+      event.preventDefault();
+      alert("Дата не может быть меньше сегодняшнего дня");
+    }
+
+  }
+</script>
 <html>
