@@ -1,8 +1,10 @@
+const dbController = require('./dbController');
+
 module.exports.filterTasks = (req, res) => {
     if (req.body.status == "All"){
         res.redirect('/');
     }else{
-        const tasks = dbController.getAllFromDB();
+        const tasks = dbController.getFromDB();
         let filterTasks = [];
         tasks.forEach((task) => {
         
@@ -10,7 +12,7 @@ module.exports.filterTasks = (req, res) => {
         filterTasks.push(task);
         }
         });
-        res.render('pages/alltasks', {datafiles: filterTasks});
+        res.render('pages/alltasks', {filedata: filterTasks});
     }
 }
 
