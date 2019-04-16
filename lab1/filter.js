@@ -12,7 +12,7 @@ module.exports.filterTasks = (req, res) => {
         filterTasks.push(task);
         }
         });
-        res.render('pages/alltasks', {filedatas: filterTasks});
+        res.render('pages/alltasks', {filedata: filterTasks});
     }
 }
 

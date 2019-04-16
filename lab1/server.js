@@ -95,6 +95,7 @@ app.post('/edit/:id', upload.single("myFile"), function(req,res){
 	task = tasks[taskIndex];
 	task.id = Number(req.body.id);
 	task.title = req.body.title;
+	task.status = req.body.status;
 	//task.date = differentDays;
 	task.date = req.body.date;
 	task.description = req.body.description;
@@ -127,5 +128,6 @@ app.post('/task/deleteFile', function(req, res){
 app.listen(3000, function(){
 	console.log("API started on localhost:3000");
 });
+
 
 app.post('/filter', filter.filterTasks);
