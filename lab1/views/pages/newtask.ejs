@@ -28,13 +28,13 @@
       <br>
       <textarea id="description" name="description">         
       </textarea>
-      <form method="POST" action="/filter">
+      
       <select id="status" name="status">
-        <option>Начата</option>
+        <option>Не начата</option>
         <option>В процессе</option>
         <option>Закончена</option>
       </select>
-    </form>
+ 
       <br>
       <input type="file" name="myFile" />    
       
@@ -69,7 +69,7 @@
   document.getElementById("addtask").onclick = function(event) {
     date = document.getElementById("firstDate").value;
     console.log(date);
-    if (Math.ceil((Date.parse(date))/(1000*3600*24) - Date.now()) < 0){
+    if (Math.ceil(((Date.parse(date)) - Date.now())/(1000*3600*24)) < 0){
       console.log(Math.ceil(Date.now() - (Date.parse(date))/(1000*3600*24)));
       event.preventDefault();
       alert("Дата не может быть меньше сегодняшнего дня");

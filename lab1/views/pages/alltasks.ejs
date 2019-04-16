@@ -13,7 +13,7 @@
 <body>
     <form method="POST" action="/filter">
       <select id="status" name="status">
-        <option>Начата</option>
+        <option>Не начата</option>
         <option>В процессе</option>
         <option>Закончена</option>
       </select>
@@ -31,12 +31,14 @@
     </div>
   </div>
 </nav>
-
-	<% filedata.forEach((task) =>{ %>
+<div class = "row">
+  <% filedata.forEach((task) =>{ %>
+    
+      <div class = "column">
     <div class="mdc-card demo-card col-md-3">
       <div tabindex="0">
         <div class="demo-card__primary">
-          <h2 class="demo-card__title mdc-typography mdc-typography--headline6"><a href="/task/<%= task.id %>"><%= task.title %></a></h2>
+          <h2 class="demo-card__title mdc-typography mdc-typography--headline6"><%= task.title %></h2>
         </div>
         <div class="demo-card__secondary mdc-typography mdc-typography--body2"><%= task.description %></div>
       </div>
@@ -57,7 +59,10 @@
         </div>
     
       </div>
+      </div>
   <% }) %>
+    
+    </div>
 
 </body>
 <script>

@@ -23,7 +23,37 @@
 	  height: 25%;
   }
 
+  .row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+  }
+  
+  .column {
+	display: flex;
+	flex-direction: column;
+	flex-basis: 100%;
+	flex: 1;
+	width: 30%;
+  }
 
+.not-started-card {
+	background-color: red;
+}
+
+.finished-card {
+	background-color: green;
+}
+
+.in-progress-card {
+	background-color: yellow;
+}
+.col-md-3 {
+	max-width: 100%;
+	max-height: 100%;
+  }
+  
 
 .text {
 	color: blue;
