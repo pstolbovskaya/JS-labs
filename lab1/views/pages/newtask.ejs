@@ -23,7 +23,7 @@
   <div align="center" class="container">
     <form method="post" action="/" enctype="multipart/form-data">
     <div class="taskinput">
-      <input type="" id="title" name="title" placeholder="Title of yoour task">  
+      <input type="" id="title" name="title" placeholder="Title of your task">  
       <br>
       <br>
       <textarea id="description" name="description">         
@@ -76,5 +76,7 @@
     }
 
   }
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementsByName("firstDate")[0].setAttribute('min', today); 
 </script>
 <html>

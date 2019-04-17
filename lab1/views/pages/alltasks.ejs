@@ -11,14 +11,7 @@
 	</title>
 </head>
 <body>
-    <form method="POST" action="/filter">
-      <select id="status" name="status">
-        <option>Не начата</option>
-        <option>В процессе</option>
-        <option>Закончена</option>
-      </select>
-      <button type="submit">Filter</button>
-    </form>
+   
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand">Task Manager</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,35 +22,47 @@
       <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="./newtask">Add new task</a>
     </div>
+    <form method="POST" action="/filter"> 
+      <button type="submit">Filter</button>
+      <select id="status" name="status"> 
+       
+        <option>Не начата</option>
+        <option>В процессе</option>
+        <option>Закончена</option>
+      </select>
+     
+    </form>
   </div>
 </nav>
 <div class = "row">
   <% filedata.forEach((task) =>{ %>
     
       <div class = "column">
-    <div class="mdc-card demo-card col-md-3">
+    <div class="card">
       <div tabindex="0">
-        <div class="demo-card__primary">
-          <h2 class="demo-card__title mdc-typography mdc-typography--headline6"><%= task.title %></h2>
+        <div class="">
+          <h2 class=><%= task.title %></h2>
         </div>
-        <div class="demo-card__secondary mdc-typography mdc-typography--body2"><%= task.description %></div>
+        <div class=""><%= task.description %></div>
       </div>
         <p>Days before deadline: <%= task.deadline %> </p>
+        <p><%= task.date %></p>
         <p><a href="download/<%= task.id %>"><%= task.userFilename %></a></p>
       <div class="mdc-card__actions">
         <div class="mdc-card__action-buttons">
+          <form method="POST" class="editdelete" action="/task/delete/<%= task.id %>">
           <a class="mdc-button mdc-card__action mdc-card__action--button" href="/task/<%= task.id %>">Edit</a>
-          <form method="POST" action="/task/delete/<%= task.id %>">
             <input type="hidden" id="id" name="id" value="<%= task.id %>">
             <button class="mdc-button mdc-card__action mdc-card__action--button" type="submit">Delete</button>
             
           </form>
-          </div>
           
-          <p id="status" title="Status"><%= task.status %></p>
-        
+          </div>
+          <div class="status" id="status" title="Status"><%= task.status %></div>
+         
         </div>
-    
+     
+        
       </div>
       </div>
   <% }) %>

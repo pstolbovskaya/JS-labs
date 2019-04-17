@@ -9,8 +9,9 @@
   }
 
   .mdc-card__actions{
-	  width: 30%;
-	  height: 25%;
+	  text-emphasis: none;
+	  display: flex;
+	  justify-content: space-between;
   }
 
   .mdc-card__primary-action:first-child{
@@ -29,12 +30,29 @@
 	flex-wrap: wrap;
 	width: 100%;
   }
-  
+  .card {
+	height: 100%;
+  	box-shadow: 0 4px 8px 0 rgba(128, 66, 66, 0.2); /* this adds the "card" effect */
+  	padding: 3%;
+  	text-align: center;
+	background-color: #f1f1f1;
+	width: 100%;
+	justify-content: space-between;
+  }
+  p {
+	  margin: 0%;
+  }
+.editdelete {
+}
+
+.status {
+	float:  right!important;
+	font-family: cursive;
+}
   .column {
 	display: flex;
-	flex-direction: column;
-	flex-basis: 100%;
-	flex: 1;
+	padding: 3% 1.5% 3% 1.5%;
+
 	width: 30%;
   }
 
